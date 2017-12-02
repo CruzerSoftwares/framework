@@ -1,0 +1,22 @@
+{
+    "name": "cruzer/framework",
+    "type": "library",
+    "description": "Base library for extending the Cruzer Framework",
+    "keywords": ["cruzerframework base library"],
+    "homepage": "https://github.com/RNKushwaha022/Cruzer-Frameowrk",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "RN Kushwaha",
+            "email": "rn.kushwaha022@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cruzer\\Framework\\": "src/"
+        }
+    }
+}
