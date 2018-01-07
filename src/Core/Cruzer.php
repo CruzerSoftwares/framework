@@ -33,7 +33,6 @@ class Cruzer {
             return $numberOfUnits.' '.$text.(($numberOfUnits>1)?'s':'');
         }
     }
-  }
 
       public static function _status( $status, $formated = true, $statusFor='default' ){
           if( $formated === false && $statusFor == 'default' ){
@@ -389,11 +388,9 @@ class Cruzer {
           return false;
       }
 
-
-
       public static function _setAuthSession( $rows, $backend = true ){
           $for = ($backend === true ? 'backend' : 'frontend');
-          $filtered = array_filter($rows,public static function($key) use($rows) {
+          $filtered = array_filter($rows,function($key) use($rows) {
               return !in_array($key, ['password']);
           }, ARRAY_FILTER_USE_KEY);
 
