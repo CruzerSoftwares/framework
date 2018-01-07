@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Controllers;
 
@@ -28,7 +28,7 @@ class BaseController{
                 $model = substr( $trace[1]['class'],0,-10);
             }
             //return debug_backtrace();
-        } 
+        }
         //check if model class exists actually
         require_once "Handler.php";
         global $loadedModules;
@@ -45,9 +45,9 @@ class BaseController{
         } else{
             $this->handleError('missing_model','Model class '.$model.' not found in '.$modelFolder.$model.'.php');
         }
-        
+
     }
-    
+
     public function _view( $view = null){
         $trace = debug_backtrace(); //_pr($trace,1);
         if( empty( $view )){
@@ -88,9 +88,9 @@ class BaseController{
              include ( $viewFolderReal.$viewFolder.'/'.$view.'.php');
              $bodyContent = ob_get_clean();
              //now we need to load this content inside our theme's layout file
-             //theme and layout may be defined in place 
-             //1. calling function 
-             //2. calling function's controller 
+             //theme and layout may be defined in place
+             //1. calling function
+             //2. calling function's controller
              //3. calling functions' controller's parent class and so on...
              $loadTheme = empty($mainObjLayOutTheme['theme']) ? 'default' : $mainObjLayOutTheme['theme'];
              $loadLayOut = empty($mainObjLayOutTheme['layout']) ? 'default' : $mainObjLayOutTheme['layout'];
@@ -103,7 +103,7 @@ class BaseController{
             $this->handleError('missing_view','view class '.$view.' not found in '.$viewFolderReal.$viewFolder.'/'.$view.'.php');
         }
     }
-    
+
     public function handleError( $error_type, $msg )
     {
         ob_start();
@@ -121,9 +121,9 @@ class BaseController{
     public function load( ){
         //$trace = debug_backtrace(); _pr($trace);
     }
-    
+
     public function set( $var, $data=null){
         $this->container[$var] = $data;
     }
-    
+
 }

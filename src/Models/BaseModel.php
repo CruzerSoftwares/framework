@@ -1,15 +1,15 @@
-<?php 
+<?php
 
 namespace Models;
 
 class BaseModel{
-    
+
     protected $table;
 
     public function __construct( ) {
         $this->table = '';
     }
-    
+
     public function fetch( $what = null, $table = null, array $options = array() ){
         $orderBy = "";
         if( is_array($what) && count($what) ){
@@ -33,7 +33,7 @@ class BaseModel{
             }
             $select = "*";
         }
-        
+
         if($select==''){
             return false;
         }
@@ -41,7 +41,7 @@ class BaseModel{
         if(isset($options) && isset($options['orderBy']) && isset($options['order'])){
             $orderBy = " ORDER BY ".db::q($options['orderBy'])." ".$options['order'];
         }
-        
+
         try{
             $query = db::con()->query('select '.$select.' from '.db::q(db::p().$this->table).' WHERE deleted=0 '.$orderBy);
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -50,7 +50,7 @@ class BaseModel{
             _pr($e,1);
         }
     }
-    
+
     public function fetchSingle( $id, $what = null, $table = null, array $options = array()){
         if($id<=0){
             return false;
@@ -76,10 +76,10 @@ class BaseModel{
             }
             $select = "*";
         }
-        
+
         if($select==''){
             return false;
-        }    
+        }
 
         try{
             $stmt = db::con()->prepare('select '.$select.' from '.db::q(db::p().$this->table).' WHERE id=:id AND deleted=0 ');
@@ -90,5 +90,5 @@ class BaseModel{
             _pr($e,1);
         }
     }
-    
+
 }
