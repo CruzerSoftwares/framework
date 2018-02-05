@@ -314,11 +314,11 @@ if( !function_exists('__css')){
 
 if( !function_exists('_url')){
     function _url( $url, $absolute = true, array $options = array() ){
-        if( $absolute === true && SITE_UNDER_DIR === false){
+        if( $absolute === true && APP_UNDER_DIR === false){
           return $url;
         }
 
-        return SITE_URL.$url;
+        return APP_URL.$url;
    }
 }
 

@@ -13,19 +13,55 @@ use DebugBar\StandardDebugBar;
 class Handler {
 	protected $debugbar;
 
-	public function serve( $routeInfo ) {
-        list( $controller, $action )  = explode('@', $routeInfo[1]);
-        $params                       = $routeInfo[2];
-        $controllerStr = "\\".APP_DIR."\\".CONTROLLER_DIR."\\".$controller;
-        $controllerObj = new $controllerStr();
-        $controllerObj->$action($params);
+	public function initilize( ) {
+		//get dotenv
+		$dotenv = new \Dotenv\Dotenv(ROOT_DIR);
+		$dotenv->load();
+
+		date_default_timezone_set( env('APP_TIMEZONE', 'Asia/Calcutta'));
+		define('ERROR_LEVEL', env('APP_ENV', 'production'));
+		define('DEBUG_ERROR', env('APP_DEBUG', 'On'));
+
+		switch (ERROR_LEVEL) {
+		    case 'development':
+		        ini_set('display_startup_errors',1);
+		        ini_set('display_errors', DEBUG_ERROR);
+		        error_reporting(E_ALL);
+		    break;
+		    case 'testing'    : error_reporting( E_ALL ^ E_NOTICE );
+		                        ini_set('display_errors', DEBUG_ERROR); break;
+		    case 'production' : ini_set('display_errors', DEBUG_ERROR); break;
+		    default           : error_reporting( E_ALL );
+		                        ini_set('display_errors', DEBUG_ERROR); break;
+		}
+
+		if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
+		define('APP_DIR', env('APP_DIR','App'));
+		define('APP_URL', env('APP_URL'));
+		define('APP_UNDER_DIR', env('APP_UNDER_DIR'));
+		define('APP_TITLE', env('APP_NAME'));
+		define('VIEW_DIR', env('VIEW_DIR','Views'));
+		define('CONTROLLER_DIR', env('CONTROLLER_DIR','Controllers'));
+		define('UPLOAD_DIR', env('UPLOAD_DIR'));
+		define('THEME_DIR', env('THEME_DIR'));
+		define('THEME_PATH', APP_URL.APP_DIR.DS.THEME_DIR.DS);
+		define('MODULE_DIR', env('MODULE_DIR'));
+		define('META_DESCRIPTION', 'Cruzer Framework');
+		define('META_KEYWORDS', 'Cruzer Framework');
+		define('COPYRIGHT', env('APP_NAME'));
+		define('COPYRIGHT_URL', 'https://www.cruzersoftwares.com');
+		define('ADMIN_DIR', env('ADMIN_DIR'));
+		define('ADMIN_PATH', APP_URL.DS.ADMIN_DIR.DS);
+		define('ADMIN_LOGIN_REDIRECT', ADMIN_PATH.'dashboard');
+		define('ADMIN_LOGOUT_REDIRECT', ADMIN_PATH.'auth');
+		require_once APP_DIR.DS."Config".DS."app.php";
 	}
 
-	public function initilize( ) {
+	public function enableDebuger( ) {
 		//include tracy
 		Debugger::enable(Debugger::DETECT, LOG_DIR);
 		Debugger::$strictMode = true;
-
+		$this->getDebuger();
 		// Debugger::$logSeverity = E_NOTICE | E_WARNING;
 		// Debugger::$email = 'admin@example.com';
 
@@ -55,13 +91,9 @@ class Handler {
 		// $logger->error('Bar');
 		// $logger->info('My logger is now ready');
 		// $logger->info('Adding a new user', array('username' => 'Seldaek'));
-
-		//get dotenv
-		$dotenv = new \Dotenv\Dotenv(DIR);
-		$dotenv->load();
 	}
 
-	public function enableDebuger(){
+	public function getDebuger(){
 		return $this->debugbar = new StandardDebugBar();
 	}
 
