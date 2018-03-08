@@ -107,26 +107,6 @@ if( !function_exists('_status')){
     }
 }
 
-if( !function_exists('_formatFlightTime')){
-    function _formatFlightTime( $time, $full=true ){
-       $newTime1 = explode('T',$time);
-       if( isset($newTime1[1]) ){
-         $newTime2 = str_replace('+','-', $newTime1[1]);
-         $newTime = explode('-', $newTime2);
-         if( is_array($newTime) && count($newTime)){
-           if( $full === true ){
-             $format['time']      = $newTime[0];
-             if(isset($newTime) && count($newTime)>1 ) $format['deduction'] = $newTime[1];
-             $format['date']      = $newTime1[0];
-             return $format;
-           } else{
-            return $newTime[0];
-           }
-         }
-       }
-    }
-}
-
 if( !function_exists('__status')){
     function __status( $status, $formated = true, $statusFor='default' ){
        echo _status($status, $formated, $statusFor);

@@ -49,8 +49,27 @@ class Routes implements HttpKernelInterface{
 		$kernel->terminate($request, $response);
 	}
 
-	public function map($path, $controller) {
-		$this->routes->add( $path, new Route( $path, array('_controller' => $controller )));
+	public function addRoute($path, $controller, $method = null) {
+		if( isset($method) && $method!=null){
+			$method = explode('|',$method);
+		}
+		$this->routes->add( $path, new Route( $path, array('_controller' => $controller ), [], [], '', [], $method ));
+	}
+
+	public function add($method, $path, $controller) {
+		$this->addRoute($path, $controller, $method );
+	}
+
+	public function get($path, $controller) {
+		$this->addRoute($path, $controller,'GET');
+	}
+
+	public function post($path, $controller) {
+		$this->addRoute($path, $controller,'POST');
+	}
+
+	public function all($path, $controller) {
+		$this->addRoute($path, $controller);
 	}
 
 	public function on($event, $callback) {
